@@ -1,0 +1,78 @@
+<aside>
+  <div class="logo">Confluence Ragify</div>
+
+  <div class="menu">
+    <div class="menu-title">Folders</div>
+    <div class="menu-list">
+      {{#each folders}}
+      <a href="/folder/{{id}}" class="item {{#if active}}active{{/if}}"><i class="ph ph-folder"></i>{{name}}<span
+          class="sep"></span><span class="count">{{nb_files}}</span>{{#if active}}<span class="edit" data-id="{{id}}"><i
+            class="ph ph-pencil-simple"></i></span>{{/if}} </a>
+      {{/each}}
+    </div>
+  </div>
+  <div class="button secondary"><i class="ph ph-download"></i>Export</div>
+  <div class="button secondary" id="add-folder"><i class="ph ph-plus"></i>Add a folder</div>
+
+
+
+</aside>
+{{#if activeFolder includeZero=true}}
+<aside class="aside-files">
+  <div class="menu">
+    <div class="menu-search">
+      <i class="ph ph-magnifying-glass"></i>
+      <input type="text" class="search" placeholder="Search">
+    </div>
+    <div class="menu-title">Files</div>
+    <div class="menu-list">
+      {{#each files}}
+      <a href="/folder/{{folder_id}}/file/{{id}}" class="item {{#if active}}active{{/if}}" data-name="{{name}}"><i
+          class="ph ph-file"></i>{{name}}</a>
+      {{/each}}
+
+
+    </div>
+  </div>
+  <div class="button secondary"><i class="ph ph-arrows-clockwise"></i>Update files</div>
+</aside>
+{{/if}}
+{{#if content includeZero=true}}
+<main>
+  <div id="editor"></div>
+</main>
+{{else}}
+<main class="empty-content">
+  Please select a file to continue
+  <div id="empty-editor"></div>
+</main>
+{{/if}}
+
+
+{{#if content includeZero=true}}
+<script>
+
+  const Editor = toastui.Editor;
+  const { colorSyntax } = Editor.plugin;
+
+  const editor = new Editor({
+    el: document.querySelector('#editor'),
+    height: '100%',
+    previewStyle: 'vertical',
+    initialEditType: 'wysiwyg',
+    plugins: [colorSyntax],
+    initialValue: "{{content}}"
+  });
+
+  editor.getMarkdown();
+
+</script>
+
+{{/if}}
+
+
+
+<script>
+
+
+</script>

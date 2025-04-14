@@ -1,0 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100..900&display=swap');
+
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Catamaran", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  display: flex;
+  font-size: 14px;
+  background: #f7f9fc;
+}
+#app {
+    display: flex;
+    width: 100%;
+    height: 100dvh;
+  }
+  aside {
+    flex: 0 0 200px;
+ 
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  .menu {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow: hidden;
+  cursor: pointer;
+  }
+  .logo {
+    font-weight: 600;
+    font-size: 1.2em;
+    flex: 0 0 auto;
+    color: #0f0f0f;
+  }
+  .menu-title {
+    color: #9d9d9d;
+    font-weight: 700;
+    font-size: 0.8em;
+  }
+ 
+  .menu-list {
+    overflow: scroll;
+  }
+  .item {
+    font-size: 0.9em;
+    padding: 4px 4px;
+    display: flex;
+  align-items: center;
+  gap: 5px;
+  color:#9c9797;
+  }
+  .menu-list {
+  overflow: scroll;
+}
+  .item i {
+    font-size: 1.1em;
+    color: #bfbfbf;
+  }
+  
+.item.active {
+    background: #fff;
+    border-radius: 3px;
+    color: #010101;
+    border: 1px solid #e8e3e3;
+  }
+  .item.active i {
+    color: #6193f2;
+  }
+  
+  main{
+    flex: 1 1 auto;
+  background: #fff;
+
+  display: flex;
+  flex-direction: column;
+  }
+  
+  #editor {
+    max-height: 100%;
+    overflow: hidden;
+  }
+  
+
+  .menu-search {
+    display: flex;
+    align-items: center;
+    background: #eff2f7;
+    border: 1px solid #dbdbdc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .menu-search input {
+    border: 0;
+    background: transparent;
+    padding: 7px 4px;
+    width: 100%;
+    flex: 1 1 auto;
+    outline: none !important;
+    font-size: 0.8em;
+    font-weight: 500;
+  }
+  .menu-search i {
+    color: #a69c9c;
+    flex: 1 1 23px;
+    text-align: center;
+  }
+  .aside-files {
+    border-left: 1px solid #dadde6;
+    background: #eff2f7;
+    border-right: 1px solid #dadde6;
+  }
+  aside a{
+    text-decoration: none;
+  }
+  .empty-content {
+    border: 0;
+    box-shadow: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #adadad;
+    background: none;
+  }
+  .button {
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+
+    background: #2466e1;
+    border: 1px solid #2466e1;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 0.9em;
+    color: #fff;
+    cursor: pointer;
+  }
+  .button.red {
+    background: #2466e1;
+    border: 1px solid #2466e1;
+  }
+  .button.secondary {
+    background: #171718;
+    border: 1px solid #252525;
+  }
+
+  .edit {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    color: #000;
+    cursor: pointer;
+  }
+  .edit i {
+    color: #000 !important;
+  }
+
+
+  .jconfirm .jconfirm-box .jconfirm-buttons button.btn-blue {
+    background-color: #00449e;
+    color: #FFF;
+    text-shadow: none;
+    -webkit-transition: background .2s;
+    transition: background .2s;
+  }
+  .jconfirm.jconfirm-white .jconfirm-box .jconfirm-buttons button, .jconfirm.jconfirm-light .jconfirm-box .jconfirm-buttons button {
+    text-transform: none;
+    font-weight: normal;
+    font-size: 0.9em;
+    padding: 6px 16px;
+  }
+  .jconfirm .jconfirm-box {
+    padding: 25px;
+  }  .jconfirm .jconfirm-box div.jconfirm-title-c {
+    padding-bottom: 25px;
+  }
+  .jconfirm .jconfirm-box .jconfirm-buttons{
+    padding: 0;
+  }
+  .jconfirm .jconfirm-box div.jconfirm-closeIcon {
+    font-size: 17px !important;
+    top: 25px;
+    right: 25px;
+  }
+  .jconfirm-title {
+    font-weight: 600;
+    color: #00449e;
+  }
+  .attention .jconfirm-title {
+    font-weight: 600;
+    color: #c10000;
+  }
+  .jconfirm-content-pane,.jconfirm .jconfirm-box div.jconfirm-content-pane .jconfirm-content {
+    overflow: initial !important;
+  }
+
+
+
+  
+.input-block {
+    display: flex;
+    flex-direction: column;
+    margin: 5px 0;
+  }
+  .input-block label {
+    font-size: 0.9em;
+    color: #aeaeae;
+    font-weight: 500;
+  }
+  .input-block input, .input-block textarea {
+    padding: 5px;
+    border: 0;
+    border-radius: 2px;
+    outline: 1px solid #ddd;
+    color: #000;
+    box-shadow: 0 0 0px 2px #eaeaea;
+    max-width: 100%;
+    min-width: 100%;
+  }
+  .input-block input:focus, .input-block textarea:focus {
+    outline: 1px solid #00449e;
+    box-shadow: 0 0 0px 4px #deecff;
+  }
+  .input-block input:active {
+    outline: #f00;
+  }
+  .jconfirm-content-pane {
+    overflow:   initial !important;
+  }
+  .count {
+    padding: 0px 4px;
+    text-align: center;
+    background: #eff2f7;
+    font-size: 0.8em;
+    border-radius: 3px;
+    border: 1px solid #c8d1e1;
+  }.sep {
+    flex: 1 1 auto;
+  }
+  input[disabled] {
+    background: #efefef;
+    color: #b8b8b8;
+  }
+  input.error {
+    outline: 1px solid #9e0000 !important;
+    box-shadow: 0 0 0px 4px #ffdede !important;
+  }

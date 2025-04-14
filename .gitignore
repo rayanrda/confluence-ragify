@@ -1,0 +1,4 @@
+/.env
+/confluencedb.sqlite
+/node_modules
+/package-lock.json
