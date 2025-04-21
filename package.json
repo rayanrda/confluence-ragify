@@ -9,14 +9,24 @@
   },
   "author": "Rayan-Charles Ridouard",
   "license": "ISC",
-  "description": "",
+  "description": "Tool to export confluence documentation to Markdown and edit on a webapp in order to export it to LORA GPT Companion ",
   "dependencies": {
+    "@guyplusplus/turndown-plugin-gfm": "^1.0.7",
+    "@joplin/turndown": "^4.0.79",
+    "@joplin/turndown-plugin-gfm": "^1.0.61",
     "body-parser": "^2.2.0",
     "express": "^5.1.0",
     "hbs": "^4.2.0",
     "install": "^0.13.0",
+    "jsdom": "^26.1.0",
+    "md-to-pdf": "^5.2.4",
+    "node-html-markdown": "^1.3.0",
     "npm": "^11.3.0",
-    "sqlite3": "^5.1.7"
+    "sanitize-filename": "^1.6.3",
+    "sqlite3": "^5.1.7",
+    "tabletojson": "^4.1.5",
+    "turndown": "^7.2.0",
+    "ws": "^8.18.1"
   },
   "devDependencies": {
     "file-loader": "^6.2.0",

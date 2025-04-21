@@ -49,7 +49,8 @@ body {
   }
  
   .menu-list {
-    overflow: scroll;
+    overflow-y: auto;
+    max-width: 25vw;
   }
   .item {
     font-size: 0.9em;
@@ -58,10 +59,11 @@ body {
   align-items: center;
   gap: 5px;
   color:#9c9797;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   }
-  .menu-list {
-  overflow: scroll;
-}
+
   .item i {
     font-size: 1.1em;
     color: #bfbfbf;
@@ -93,11 +95,12 @@ body {
 
   .menu-search {
     display: flex;
-    align-items: center;
-    background: #eff2f7;
-    border: 1px solid #dbdbdc;
-    border-radius: 4px;
-    margin-bottom: 10px;
+        align-items: center;
+        background: #eff2f7;
+        border: 1px solid #dbdbdc;
+        border-radius: 4px;
+        margin-bottom: 10px;
+        flex: 1 1 auto;
   }
   .menu-search input {
     border: 0;
@@ -108,7 +111,23 @@ body {
     outline: none !important;
     font-size: 0.8em;
     font-weight: 500;
+    height: 26px;
   }
+  .menu-select {
+    flex: 0 1 160px;
+}
+
+.menu-select select {
+    width: 100%;
+    height: 27px;
+    border: 1px solid #dbdbdc;
+    background: #eff2f7;
+}
+
+.menu-header {
+    display: flex;
+    gap: 10px;
+}
   .menu-search i {
     color: #a69c9c;
     flex: 1 1 23px;
@@ -202,7 +221,10 @@ body {
     color: #c10000;
   }
   .jconfirm-content-pane,.jconfirm .jconfirm-box div.jconfirm-content-pane .jconfirm-content {
-    overflow: initial !important;
+    max-height: 70vh;
+    overflow-x: initial;
+    overflow-y: auto;
+    padding: 4px;
   }
 
 
@@ -256,3 +278,92 @@ body {
     outline: 1px solid #9e0000 !important;
     box-shadow: 0 0 0px 4px #ffdede !important;
   }
+
+  .progress {
+    position: fixed;
+    width: 100%;
+    height: 7px;
+    background: #cbcbcb;
+    display: none;
+    z-index: 100000;
+}
+
+.progress .bar {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 0%;
+    background: #00449e;
+    height: 100%;
+}
+.progress::before {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  content: '';
+  opacity: 0.4;
+}
+.aside-files a.item.strikethrough {
+  text-decoration: line-through;
+}
+.aside-files .item i {
+  color: #ff9d00 !important;
+}
+.aside-files a.item.strikethrough i {
+  color: #bfbfbf !important;
+}
+.aside-files a.item.validated i {
+  color: #6b7cfd !important;
+}
+li.sensitive_info {
+  list-style: none;
+  padding: 2px 15px;
+  margin: 6px 0;
+  background: #fff;
+  border: 1px solid #afafaf;
+  border-radius: 3px;
+  font-size: 0.8em;
+  /* box-shadow: 2px 0 1px 1px #e1e1e1; */
+  cursor: pointer;
+  outline: 2px solid #e1dfdf;
+  display: flex
+;
+  justify-content: space-between;
+  font-weight: 500;
+  align-items: center;
+}
+li.sensitive_info span {
+  display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+      max-width: 94%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+}
+ul {
+  padding: 0;
+}
+.notification {
+  position: fixed;
+  bottom: 15px;
+  width: auto;
+  padding: 5px 16px;
+  right: 18px;
+
+  color: #fff;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.9em;
+  min-width: 200px;
+  box-shadow: 0 0 5px 3px #d1d1d1;
+} 
+.notification.success {
+   background: #549c01;
+}
+.notification.error {
+  background: #9c0101;
+}
