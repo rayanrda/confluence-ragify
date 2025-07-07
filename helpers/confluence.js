@@ -40,6 +40,45 @@ class ConfluenceExport {
         const json = await response.json();
         return json;
     }   
+
+    async fetchPage(external_id){
+
+      if(!process.env.CONFLUENCE_TOKEN || process.env.CONFLUENCE_TOKEN == ''){
+          throw new Error("Update you token in the .env file");
+          return;
+      }
+
+      let url = `${process.env.CONFLUENCE_BASE}/rest/api/content/search?cql=id+=+"${external_id}"&expand=body.export_view,body.view,version`;
+
+      const response = await fetch(url,
+         {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${process.env.CONFLUENCE_TOKEN}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            
+          },
+        });
+    
+      const json = await response.json();
+
+      console.log(json)
+
+      return json.results[0];
+  }   
+
+    formatPage(page,row){
+            var url = `${process.env.CONFLUENCE_BASE}${page._links.webui}`; 
+              let html = `<h1><a href="${url}">${page.title}</a></h1>`;
+              if(row.prepend){
+                html += row.prepend.replaceAll("\n","<br/>");
+              }
+              html += page.body.view.value;
+              html = html.replace(/href='#/g, `href='${url}#`);
+              html = html.replace(/href='\//g, `href='${url}/`);
+              return this.markdown(html);
+    }
     
      build_query(config,start,limit){
 

@@ -1,4 +1,6 @@
-<div class="progress"><div class="bar"></div></div>
+<div class="progress">
+  <div class="bar"></div>
+</div>
 <aside>
   <div class="logo">Confluence Ragify</div>
 
@@ -11,9 +13,14 @@
             class="ph ph-pencil-simple"></i></span>{{/if}} </a>
       {{/each}}
     </div>
+    <div class="menu-sep">OR</div>
+    <div class="sub-menu">
+
+      <div class="button secondary" id="export-files"><i class="ph ph-download"></i>Export</div>
+      <div class="button secondary" id="add-folder"><i class="ph ph-plus"></i>Add a folder</div>
+    </div>
   </div>
-  <div class="button secondary" id="export-files"><i class="ph ph-download"></i>Export</div>
-  <div class="button secondary" id="add-folder"><i class="ph ph-plus"></i>Add a folder</div>
+
 
 
 
@@ -22,30 +29,32 @@
 <aside class="aside-files">
   <div class="menu">
     <div class="menu-header">
-    <div class="menu-search">
-      <i class="ph ph-magnifying-glass"></i>
-      <input type="text" class="search" placeholder="Search">
-    </div>
-     <div class="menu-select">
+      <div class="menu-search">
+        <i class="ph ph-magnifying-glass"></i>
+        <input type="text" class="search" placeholder="Search">
+      </div>
+      <div class="menu-select">
         <select name="" class="file-status">
           <option value="all">All</option>
           <option value="to_validate">Validation Required</option>
           <option value="validated">Validated</option>
           <option value="excluded">Excluded</option>
         </select>
-     </div>
+      </div>
     </div>
     <div class="menu-title">Files</div>
     <div class="menu-list">
       {{#each files}}
-      <a href="/folder/{{folder_id}}/file/{{external_id}}" class="item {{#if active}}active{{/if}} {{#if exclude}}strikethrough{{/if}} {{#if validated}}validated{{/if}}" data-name="{{name}}"><i
-          class="ph ph-file"></i>{{name}}</a>
+      <a href="/folder/{{folder_id}}/file/{{external_id}}"
+        class="item {{#if active}}active{{/if}} {{#if exclude}}strikethrough{{/if}} {{#if validated}}validated{{/if}} {{#if oa_gpt_id}}oa_gpt{{/if}}"
+        data-name="{{name}}"><i class="ph ph-file"></i>{{name}}</a>
       {{/each}}
 
 
     </div>
   </div>
-  <div class="button secondary" id="update-file" data-id="{{activeFolder}}"><i class="ph ph-arrows-clockwise"></i>Fetch files</div>
+  <div class="button secondary" id="update-file" data-id="{{activeFolder}}"><i class="ph ph-arrows-clockwise"></i>Fetch
+    files</div>
 </aside>
 {{/if}}
 {{#if content includeZero=true}}
@@ -65,273 +74,299 @@
 {{content}}
 </script>
 <script>
-function replace(){
-  $.confirm({
-     escapeKey: 'cancel',
-    useBootstrap: false,
-    boxWidth: "500px",
-    theme: "light",
-    closeIcon: true,
-              keys: ["enter"],
-    closeIconClass: "ph ph-x",
-    title: "Search & Replace",
-    content: ` <div class="input-block">
+  function replace() {
+    $.confirm({
+      escapeKey: 'cancel',
+      useBootstrap: false,
+      boxWidth: "500px",
+      theme: "light",
+      closeIcon: true,
+      keys: ["enter"],
+      closeIconClass: "ph ph-x",
+      title: "Search & Replace",
+      content: ` <div class="input-block">
       <label>Search</label>
       <input type="text" id="search">
       </div><div class="input-block">
       <label>Replace</label>
       <input type="text" id="replace">
       </div>`,
-    buttons: {
-     cancel:{
+      buttons: {
+        cancel: {
           text: "Cancel",
           action: function () {
-             return
+            return
           },
         },
-        search:{
+        search: {
           text: "Search & Replace",
           btnClass: "btn-blue",
           action: function () {
-               try {
-                regex = new RegExp(this.$content.find('#search').val(), 'gm'); // 'g' for global search
-              } catch (error) {
-                  notif("Invalid Regex Patern","error");
-                return;
-              }
-              console.log(this.$content.find('#search').val());
-              editor.setMarkdown(editor.getMarkdown().replace(regex, this.$content.find('#replace').val()));
-                notif("Text replaced");
- 
-             
+            try {
+              regex = new RegExp(this.$content.find('#search').val(), 'gm'); // 'g' for global search
+            } catch (error) {
+              notif("Invalid Regex Patern", "error");
+              return;
+            }
+            console.log(this.$content.find('#search').val());
+            editor.setMarkdown(editor.getMarkdown().replace(regex, this.$content.find('#replace').val()));
+            notif("Text replaced");
+
+
           },
         },
-    }
-  });
-}
-
-function saveFile(){
-   $.post(`/api/save/file/{{activeFile.external_id}}`,{md:editor.getMarkdown()},function(r){
-  if(r.success){
-    $(".aside-files .active").addClass("validated");
-    notif("Page saved");
-  }else{
-    alert("An error occured");
-  }
- });
-}
-
-function tokenDetect(){
-  const sensitive_check = detectSensitiveInfo(editor.getMarkdown());
- if(sensitive_check.containsSensitiveInfo !== undefined && sensitive_check.containsSensitiveInfo == true){
-
-    let li = '';
-    sensitive_check.matches.forEach((v,k) => {
-      li += `<li  class="sensitive_info"><span class="text">${v}</span><span class="btn"><i class="ph ph-trash-simple"></i></span></li>`;
+      }
     });
-    
-    $.confirm({
-       escapeKey: 'ok',
-    useBootstrap: false,
-    boxWidth: "500px",
-    theme: "light",
-    closeIcon: true,
-              keys: ["enter"],
-    closeIconClass: "ph ph-x",
-    title: "Potential sensitive information",
-    content: `This page seem to contain sensitive information. You can click each of them on it to replate it by "HIDDEN_INFO". Please be extra carefull when looking at it: <ul>${li}</ul>`,
-    buttons: {
-        ok:{
-          text: "Ok",
-          action: function () {
-            return;
-          },
-        },
-    }
-  });
- }else{
-   $.confirm({
-    escapeKey: 'ok',
-    useBootstrap: false,
-    boxWidth: "500px",
-    theme: "light",
-    closeIcon: true,
-    closeIconClass: "ph ph-x",
-          keys: ["Enter"],
-    title: "No sensitive information found",
-    content: `This page seem dosn't contain any sensitive information.`,
-    buttons: {
-        ok:{
-          text: "Ok",
-          action: function () {
-            return;
-          },
-        },
-    }
-  });
- }
-}
+  }
 
-$(window).bind('keydown', function(event) {
+  function saveFile() {
+    $(".aside-files .active").addClass("saving");
+    $(".save").addClass("saving");
+    $.post(`/api/save/file/{{activeFile.external_id}}`, { md: editor.getMarkdown() }, function (r) {
+      if (r.success) {
+        $(".aside-files .active").addClass("validated");
+         $(".aside-files .active").addClass("oa_gpt");
+          $(".aside-files .active").removeClass("saving");
+          $(".save").removeClass("saving");
+        notif("Page saved");
+      } else {
+        alert("An error occured");
+      }
+    });
+  }
+
+  function tokenDetect() {
+    const sensitive_check = detectSensitiveInfo(editor.getMarkdown());
+    if (sensitive_check.containsSensitiveInfo !== undefined && sensitive_check.containsSensitiveInfo == true) {
+
+      let li = '';
+      sensitive_check.matches.forEach((v, k) => {
+        li += `<li  class="sensitive_info"><span class="text">${v}</span><span class="btn"><i class="ph ph-trash-simple"></i></span></li>`;
+      });
+
+      $.confirm({
+        escapeKey: 'ok',
+        useBootstrap: false,
+        boxWidth: "500px",
+        theme: "light",
+        closeIcon: true,
+        keys: ["enter"],
+        closeIconClass: "ph ph-x",
+        title: "Potential sensitive information",
+        content: `This page seem to contain sensitive information. You can click each of them on it to replate it by "HIDDEN_INFO". Please be extra carefull when looking at it: <ul>${li}</ul>`,
+        buttons: {
+          ok: {
+            text: "Ok",
+            action: function () {
+              return;
+            },
+          },
+        }
+      });
+    } else {
+      $.confirm({
+        escapeKey: 'ok',
+        useBootstrap: false,
+        boxWidth: "500px",
+        theme: "light",
+        closeIcon: true,
+        closeIconClass: "ph ph-x",
+        keys: ["Enter"],
+        title: "No sensitive information found",
+        content: `This page seem dosn't contain any sensitive information.`,
+        buttons: {
+          ok: {
+            text: "Ok",
+            action: function () {
+              return;
+            },
+          },
+        }
+      });
+    }
+  }
+
+  $(window).bind('keydown', function (event) {
     if (event.ctrlKey || event.metaKey) {
       console.log(String.fromCharCode(event.which).toLowerCase());
-        switch (String.fromCharCode(event.which).toLowerCase()) {
+      switch (String.fromCharCode(event.which).toLowerCase()) {
         case '1':
-            event.preventDefault();
-            event.stopPropagation();
-            saveFile();
-            break;
+          event.preventDefault();
+          event.stopPropagation();
+          saveFile();
+          break;
         case '2':
-            event.preventDefault();
-            event.stopPropagation();
-            replace();
-            break;
+          event.preventDefault();
+          event.stopPropagation();
+          replace();
+          break;
         case '3':
-            event.preventDefault();
-            event.stopPropagation();
-            tokenDetect();
-            break;
-                   case 'm':
-            event.preventDefault();
-            event.stopPropagation();
-            tokenDetect();
-            break;
-          case '\'':
+          event.preventDefault();
+          event.stopPropagation();
+          tokenDetect();
+          break;
+        case 'm':
+          event.preventDefault();
+          event.stopPropagation();
+          tokenDetect();
+          break;
+        case '\'':
           window.location.href = $(".aside-files .item.active").next(".item").attr("href");
-            break;
-                      case '%':
+          break;
+        case '%':
           history.back();
-            break;
-        }
+          break;
+      }
     }
-});
+  });
 
 
-const _md = document.getElementById("markdown");
+  const _md = document.getElementById("markdown");
   const md = _md.innerText
   const Editor = toastui.Editor;
   const { colorSyntax } = Editor.plugin;
 
 
 
-  
+
 
   const editor = new Editor({
     el: document.querySelector('#editor'),
     height: '100%',
     previewStyle: 'vertical',
-//    initialEditType: 'wysiwyg',
+    //    initialEditType: 'wysiwyg',
     plugins: [colorSyntax],
-    initialValue:_.unescape(md).replaceAll("&#x3D;","=").replaceAll("&#x60;","`").split("Change History")[0],
+    initialValue: _.unescape(md).replaceAll("&#x3D;", "=").replaceAll("&#x60;", "`").split("Change History")[0],
   });
-  setTimeout(()=>{$(".ProseMirror")[0].focus();},200);
+  setTimeout(() => { $(".ProseMirror")[0].focus(); }, 200);
 
 
 
-$(document).on("click",".sensitive_info .btn",function(){
-  let text = $(this).parent().find(".text").text();
-  editor.setMarkdown(editor.getMarkdown().replaceAll(text,"HIDDEN_VALUE"));
-   $(this).parent().css("text-decoration","line-through");
-  $(this).remove();
-  notif("Token removed");
- 
-});
+  $(document).on("click", ".sensitive_info .btn", function () {
+    let text = $(this).parent().find(".text").text();
+    editor.setMarkdown(editor.getMarkdown().replaceAll(text, "HIDDEN_VALUE"));
+    $(this).parent().css("text-decoration", "line-through");
+    $(this).remove();
+    notif("Token removed");
 
-const token = document.createElement('span');
-token.innerHTML = '<i class="ph ph-password"></i>';
-token.style = 'cursor: pointer;font-size:1.4em; '
-token.addEventListener('click', () => {
- tokenDetect()
-});
+  });
 
- editor.insertToolbarItem({groupIndex:0,itemIndex:0},{
-      name: 'Detect token',
-      tooltip: 'Detect token',
-      el: token,
-    });
+  const token = document.createElement('span');
+  token.innerHTML = '<i class="ph ph-password"></i>';
+  token.style = 'cursor: pointer;font-size:1.4em; '
+  token.addEventListener('click', () => {
+    tokenDetect()
+  });
 
-
-
-
-const search_replace = document.createElement('span');
-search_replace.innerHTML = '<i class="ph ph-swap"></i>';
-search_replace.style = 'cursor: pointer;font-size:1.4em; '
-search_replace.addEventListener('click', () => {
-  replace();
-});
-
-
-  editor.insertToolbarItem({groupIndex:0,itemIndex:0},{
-      name: 'Search & Replace',
-      tooltip: 'Search & Replace',
-      el: search_replace,
-    });
-
-
-
-const save = document.createElement('span');
-save.innerHTML = '<i class="ph ph-floppy-disk"></i>';
-save.style = 'cursor: pointer;font-size:1.4em; '
-save.addEventListener('click', () => {
-saveFile()
-});
+  editor.insertToolbarItem({ groupIndex: 0, itemIndex: 0 }, {
+    name: 'Detect token',
+    tooltip: 'Detect token',
+    el: token,
+  });
 
 
 
 
-  editor.insertToolbarItem({groupIndex:0,itemIndex:0},{
-      name: 'Save',
-      tooltip: 'Save & Validate',
-      el: save,
-    });
+  const search_replace = document.createElement('span');
+  search_replace.innerHTML = '<i class="ph ph-swap"></i>';
+  search_replace.style = 'cursor: pointer;font-size:1.4em; '
+  search_replace.addEventListener('click', () => {
+    replace();
+  });
+
+
+  editor.insertToolbarItem({ groupIndex: 0, itemIndex: 0 }, {
+    name: 'Search & Replace',
+    tooltip: 'Search & Replace',
+    el: search_replace,
+  });
+
+
+
+  const save = document.createElement('span');
+  save.classList = "save";
+  save.innerHTML = '<i class="ph ph-floppy-disk"></i>';
+  save.style = 'cursor: pointer;font-size:1.4em; '
+  save.addEventListener('click', () => {
+    saveFile()
+  });
 
 
 
 
-
+  editor.insertToolbarItem({ groupIndex: 0, itemIndex: 0 }, {
+    name: 'Save',
+    tooltip: 'Save & Validate',
+    el: save,
+  });
 
 
 
 
 
 
-    const include = document.createElement('span');
-include.innerHTML = '<i class="ph ph-eye"></i>';
-include.style = 'cursor: pointer;font-size:1.4em; '
-include.addEventListener('click', () => {
-  if($(".aside-files .active").hasClass("strikethrough")){
-    $.post(`/api/include/file/{{activeFile.external_id}}`,function(r){
-      if(r.success){
-        $(".aside-files .active").removeClass("strikethrough");
-        notif("Page included");
-      }else{
-        alert("An error occured");
-      }
-    });
-  }else{
-      $.post(`/api/exclude/file/{{activeFile.external_id}}`,function(r){
-        if(r.success){
-          $(".aside-files .active").addClass("strikethrough");
-          notif("Page excluded");
-        }else{
+
+
+
+
+
+  const include = document.createElement('span');
+  include.innerHTML = '<i class="ph ph-eye"></i>';
+  include.style = 'cursor: pointer;font-size:1.4em; '
+  include.addEventListener('click', () => {
+    if ($(".aside-files .active").hasClass("strikethrough")) {
+      $.post(`/api/include/file/{{activeFile.external_id}}`, function (r) {
+        if (r.success) {
+          $(".aside-files .active").removeClass("strikethrough");
+          notif("Page included");
+        } else {
           alert("An error occured");
         }
       });
-  }
- 
-});
+    } else {
+      $.post(`/api/exclude/file/{{activeFile.external_id}}`, function (r) {
+        if (r.success) {
+          $(".aside-files .active").addClass("strikethrough");
+          notif("Page excluded");
+        } else {
+          alert("An error occured");
+        }
+      });
+    }
 
-  editor.insertToolbarItem({groupIndex:5,itemIndex:0},{
-      name: 'Toogle Exclude',
-      tooltip: 'Toogle Exclude',
-      el: include,
+  });
+
+  editor.insertToolbarItem({ groupIndex: 5, itemIndex: 0 }, {
+    name: 'Toogle Exclude',
+    tooltip: 'Toogle Exclude',
+    el: include,
+  });
+
+
+
+
+  const fetchPage = document.createElement('span');
+  fetchPage.innerHTML = '<i class="ph ph-arrows-clockwise"></i>';
+  fetchPage.style = 'cursor: pointer;font-size:1.4em; '
+  fetchPage.addEventListener('click', () => {
+    $.post(`/api/fetch/file/{{activeFile.external_id}}`, function (r) {
+      if (r.success) {
+        window.location.reload();
+        notif("Page updated");
+      } else {
+        alert("An error occured");
+      }
     });
+  });
 
+
+  editor.insertToolbarItem({ groupIndex: 5, itemIndex: 1 }, {
+    name: 'Fetch',
+    tooltip: 'Fetch',
+    el: fetchPage,
+  });
 
 
 </script>
 
 {{/if}}
-
-
-

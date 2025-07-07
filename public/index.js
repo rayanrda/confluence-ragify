@@ -209,8 +209,10 @@ function notif(msg,status="success"){
 
 $(() => {
 
+  if(document.querySelector("input.search") && document.querySelector("select.file-status")){
   document.querySelector("input.search").value = window.localStorage.getItem("search") || "";
   document.querySelector("select.file-status").value = window.localStorage.getItem("filter") || "all";
+  }
 
   filter();
   if (document.querySelector("input.search")) {

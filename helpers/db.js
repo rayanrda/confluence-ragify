@@ -27,7 +27,9 @@ const db = new sqlite3.Database("./confluencedb.sqlite", (err) => {
         content TEXT,
         lastModified DATETIME,
         exclude INTEGER DEFAULT 0,
-        validated INTEGER DEFAULT 0
+        validated INTEGER DEFAULT 0,
+        oa_gpt_id VARCHAR(50) NULL
+
       )
     `);
   }

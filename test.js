@@ -14,7 +14,7 @@ process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
  
  
- helpers.getFile("372019644").then(async (file) => {
-              const pdf = await mdToPdf({ content: file.content },{ dest: `./export/${sanitize(file.name)}.pdf` });
+ helpers.getFile("483866812").then(async (file) => {
+              const pdf = await mdToPdf({ content: file.content },{ dest: `./manual-export/${sanitize(file.name)}.pdf` });
         
 });
