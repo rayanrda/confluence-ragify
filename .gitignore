@@ -1,6 +1,6 @@
 /.env
 /.npmrc
-/confluencedb.sqlite
+/*.sqlite
 /node_modules
 /export
 /package-lock.json

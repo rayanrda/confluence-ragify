@@ -46,7 +46,7 @@
     <div class="menu-list">
       {{#each files}}
       <a href="/folder/{{folder_id}}/file/{{external_id}}"
-        class="item {{#if active}}active{{/if}} {{#if exclude}}strikethrough{{/if}} {{#if validated}}validated{{/if}} {{#if oa_gpt_id}}oa_gpt{{/if}}"
+        class="item {{#if active}}active{{/if}} {{#if exclude}}strikethrough{{/if}} {{#if oa_gpt_id}}oa_gpt{{/if}} {{#if validated}}validated{{/if}} "
         data-name="{{name}}"><i class="ph ph-file"></i>{{name}}</a>
       {{/each}}
 

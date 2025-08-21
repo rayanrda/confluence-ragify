@@ -73,11 +73,13 @@ app.post("/api/save/file/:file", bodyParser.urlencoded({ extended: true, limit: 
 
 
       if (file.oa_gpt_id !== undefined && file.oa_gpt_id !== null) {
-        const delete_file = await axios.delete(`https://gpt.loreal.net/v1/contexts/ngl_ai_companion_lusa-np/files/${file.oa_gpt_id}`, {
+        try{
+                  const delete_file = await axios.delete(`https://gpt.loreal.net/v1/contexts/ngl_ai_companion_lusa-np/files/${file.oa_gpt_id}`, {
           headers: {
             "Cookie": `${process.env.OAGPT_COOKIE}`,
           },
         });
+      }catch(error){}
       }
 
       var form = new FormData();
@@ -277,10 +279,16 @@ wss.on('connection', (ws, req) => {
                   ws.send(JSON.stringify({ action: 'file', folderid: row.id, external_id: external_id, 'name': title, index: ((i) * perPage + y + 1), totalSize: totalSize }));
 
                 } else {
-                  if (new Date(file.lastModified) > new Date(date)) {
+
+                  var updated = false;
+                  if (new Date(file.lastModified) < new Date(date)) {
+                 
                     await db.runAsync("UPDATE files SET name=?,content=?,lastModified=?,validated=0 WHERE external_id = ? ", title, markdown, date, external_id);
+                    updated = true;
                   }
-                  ws.send(JSON.stringify({ action: 'update', folderid: row.id, external_id: external_id, 'name': title, index: ((i) * perPage + y + 1), totalSize: totalSize }));
+                  
+                                      ws.send(JSON.stringify({ action: 'update',updated, folderid: row.id, external_id: external_id, 'name': title, index: ((i) * perPage + y + 1), totalSize: totalSize ,dblastUpdated : new Date(file.lastModified),  lastUpdated: new Date(date)}));
+
                 }
 
 

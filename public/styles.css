@@ -360,7 +360,7 @@ aside a.switch{
 .aside-files a.item.validated i {
   color: #6b7cfd !important;
 }
-.aside-files a.item.oa_gpt i {
+.aside-files a.item.oa_gpt.validated i {
   color: #00d758  !important;
 }
 li.sensitive_info {
